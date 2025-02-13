@@ -301,8 +301,9 @@ public class TestInventory
         //----------------------------------------------------------------------
         // Test that the two Inventories are equal
         //----------------------------------------------------------------------
-        assertThat(invWith8Slots, is(equalTo(copy)));
+         assertThat(invWith8Slots, is(equalTo(copy)));
     }
+
 
     @Test
     public void testMergeStacks()

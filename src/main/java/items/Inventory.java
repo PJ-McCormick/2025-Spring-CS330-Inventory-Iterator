@@ -30,7 +30,9 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
      */
     public static void mergeStacks(ItemStack lhs, ItemStack rhs)
     {
-        // Refer to the notes from Assignment 1
+        // lhs needs to have items added to it.
+        // rhs's size is needed
+        lhs.addItems(rhs.size());
     }
 
     /**
@@ -95,7 +97,7 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
     public boolean isFull()
     {
         // Replace the next line
-        return false;
+        return this.slots.size() == this.capacity;
     }
 
     /**
@@ -119,10 +121,17 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
     public ItemStack findMatchingItemStack(ItemStack key)
     {
         // Adapt the logic from Assignment 1
-
+        // Use enhanced for loop to iterate through slots
+        // return Itemstack in slot if its Item type matches key
+        
+        for(ItemStack stk: this.slots){
+            if(stk.equals(key))
+                return stk;
+        }   
+        // no match was found
         return null;
     }
-
+    
     /**
      * This is the standard Linked List append operation from Review 01
      *
@@ -131,6 +140,7 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
     public void addItemStackNoCheck(ItemStack toAdd)
     {
         // Add the missing (one) line by using `this.slots.add(????)`
+        this.slots.add(toAdd);
     }
 
     /**
@@ -166,14 +176,26 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
     public Inventory clone()
     {
         Inventory copy = new Inventory(this.totalSlots());
-
+        copy.capacity = this.capacity;
+        
         // Add the missing copy logic (loop)
 
+        // create an iterator for the Inventory
+        // that clone() method is being called from 
+        Iterator<ItemStack> it = this.iterator();
+        
+        for(ItemStack stk: this.slots){
+            if(it.hasNext()){
+                stk = (it.next());
+                copy.addItems(stk);
+            }
+        }
         return copy;
+        
     }
 
     /**
-     * Two Invetories are considered equal if they:
+     * Two Inventories are considered equal if they:
      *
      *   1. Have the same capacity
      *   2. Have the same ItemStacks in the same order
@@ -215,6 +237,11 @@ public class Inventory implements Iterable<ItemStack>, Cloneable
         strBld.append(summaryLine);
 
         // Add the missing loop
+        for(ItemStack stk: this.slots){
+            // Commented out following line of code since might as well use toString() instead
+            //strBld.append(String.format("  (%2d) %s%n", stk.size(),  stk.getItem().getName()));
+            strBld.append("  " + stk.toString() + "\n");
+        }
 
         return strBld.toString();
     }
